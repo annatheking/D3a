@@ -42,12 +42,10 @@ function getXScale(WealthData, chosenXAxis) {
 
 function getYScale(WealthData, chosenYAxis) {
     // create scales
-    var ydomain = d3.extent(WealthData, d => d[chosenYAxis]);
     var yLinearScale = d3.scaleLinear()
       .domain([d3.min(WealthData, d => d[chosenYAxis]) * 0.8,
         d3.max(WealthData, d => d[chosenYAxis]) * 1.2
       ])
-    //   .domain([ydomain[0], ydomain[1]-5])
       .range([height, 0]);
   
     return yLinearScale;
@@ -207,6 +205,7 @@ d3.csv("assets/data/data.csv").then(WealthData => {
     .attr("y", 0 - margin.left)
     .attr("x", 0 - (height / 2))
     .attr("dy", "1em")
+    .attr("value", "obesity")
     .classed("inactive", true)
     .text("Obese (%)");
 
@@ -214,6 +213,7 @@ d3.csv("assets/data/data.csv").then(WealthData => {
     .attr("y", 20 - margin.left)
     .attr("x", 0 - (height / 2))
     .attr("dy", "1em")
+    .attr("value", "smokes")
     .classed("inactive", true)
     .text("Smokes (%)");
 
@@ -221,6 +221,7 @@ d3.csv("assets/data/data.csv").then(WealthData => {
     .attr("y", 40 - margin.left)
     .attr("x", 0 - (height / 2))
     .attr("dy", "1em")
+    .attr("value", "healthcare")
     .classed("active", true)
     .text("Lacks Healthcare (%)");
 
