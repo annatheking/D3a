@@ -85,6 +85,16 @@ function renderCircles(circlesGroup, newXScale, chosenXAxis, newYScale, chosenYA
   return circlesGroup;
 }
 
+function renderText(textGroup, newXScale, chosenXAxis, newYScale, chosenYAxis) {
+
+  textGroup.transition()
+    .duration(1000)
+    .attr("dx", d => newXScale(d[chosenXAxis])-8)
+    .attr("dy", d => newYScale(d[chosenYAxis])+15/3.5)
+
+  return textGroup;
+}
+
 // function used for updating circles group with new tooltip
 function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
 
@@ -98,7 +108,8 @@ function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
 
   var toolTip = d3.tip()
     .attr("class", "tooltip")
-    .offset([-10, -80])
+    .offset([-8, 30])
+    .style("border-radius", "10px")
     .html(d =>`${d.state}<br>${xlabel} ${d[chosenXAxis]}<br>${ylabel} ${d[chosenYAxis]}`);
 
   circlesGroup.call(toolTip);
@@ -109,7 +120,7 @@ function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
 
   // onmouseout event
   .on("mouseout", function(data, index) {
-      toolTip.hide(data, this);
+      toolTip.hide(data);
   });
 
   return circlesGroup;
@@ -158,11 +169,11 @@ d3.csv("assets/data/data.csv").then(WealthData => {
     .attr("cx", d => xLinearScale(d[chosenXAxis]))
     .attr("cy", d => yLinearScale(d[chosenYAxis]))
     .attr("r", 12)
-    .attr("fill", "green")
+    .attr("fill", "purple")
     .attr("opacity", ".2");
 
   // append initial circles
-  var textGroup_test = circlesGroup_2
+  var textGroup = circlesGroup_2
     .append("text")
     .style("font-size", "12px")
     .attr("dx", d => xLinearScale(d[chosenXAxis])-8)
@@ -248,6 +259,7 @@ d3.csv("assets/data/data.csv").then(WealthData => {
 
         // updates circles with new x values
         circlesGroup = renderCircles(circlesGroup, xLinearScale, chosenXAxis, yLinearScale, chosenYAxis);
+        textGroup = renderText(textGroup, xLinearScale, chosenXAxis, yLinearScale, chosenYAxis);
 
         // updates tooltips with new info
         circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
@@ -308,6 +320,7 @@ d3.csv("assets/data/data.csv").then(WealthData => {
 
         // updates circles with new y values
         circlesGroup = renderCircles(circlesGroup, xLinearScale, chosenXAxis, yLinearScale, chosenYAxis);
+        textGroup = renderText(textGroup, xLinearScale, chosenXAxis, yLinearScale, chosenYAxis);
 
         // updates tooltips with new info
         circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
